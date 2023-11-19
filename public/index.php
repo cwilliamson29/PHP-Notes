@@ -1,5 +1,7 @@
 <?php
 
+	session_start();
+
 	use Core\Router;
 
 	$BASE_PATH = __DIR__ . '/../';
@@ -13,7 +15,7 @@
 	});
 
 	require base_path('bootstrap.php');
-	
+
 	$router = new Router();
 
 	$routes = require base_path('routes.php');
@@ -21,13 +23,3 @@
 	$method = $_POST['_method'] ?? $_SERVER['REQUEST_METHOD'];
 
 	$router->route($uri, $method);
-	//require base_path("Core/Router.php");
-
-
-	//	$config = require('config.php');
-	//	$db = new Database($config['database']);
-	//$posts = $db->query("select * from post")->fetchAll();
-
-	//	foreach ($posts as $post) {
-	//		echo "<li>" . $post['id'] . $post['title'] . "</li>";
-	//	}

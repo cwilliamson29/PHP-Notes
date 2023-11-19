@@ -17,3 +17,7 @@
 	// Single Edit Note
 	$router->get('/note/edit', 'controllers/notes/edit.php');
 	$router->patch('/note', 'controllers/notes/update.php');
+
+	// Register User
+	$router->get('/register', 'controllers/registration/create.php');
+	$router->post('/register', 'controllers/registration/store.php');
