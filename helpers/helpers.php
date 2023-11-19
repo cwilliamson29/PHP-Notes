@@ -30,7 +30,7 @@
 		return __DIR__ . '/../' . $path;
 	}
 
-	function view($path, $attributes = []) {
+	function view($path, $attributes = []): void {
 		extract($attributes);
 		require base_path('views/') . $path;
 	}

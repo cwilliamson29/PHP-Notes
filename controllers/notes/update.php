@@ -7,7 +7,7 @@
 
 	$db = App::resolve(Database::class);
 
-	$currentUser = 1;
+	$currentUser = 3;
 
 	$note = $db->query('select * from notes where id = :id', [
 		'id' => $_POST['id']

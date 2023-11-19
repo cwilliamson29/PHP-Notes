@@ -1,7 +1,7 @@
 <?php
 
 
-	view("notes/edit.view.php", [
+	view("notes/create.view.php", [
 		'heading' => 'Create Note',
-		'errors' => []
+		'errors' => [],
 	]);
