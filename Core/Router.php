@@ -4,13 +4,14 @@
 
 	use Core\Middleware\Auth;
 	use Core\Middleware\Guest;
+	use Core\Middleware\Middleware;
 
 	class Router
 	{
 		protected $routes = [];
 
 		public function get($uri, $controller) {
-			$this->add('GET', $uri, $controller);
+			return $this->add('GET', $uri, $controller);
 		}
 
 		public function add($method, $uri, $controller) {
@@ -51,15 +52,9 @@
 		public function route($uri, $method) {
 			foreach ($this->routes as $route) {
 				if ($route['uri'] === $uri && $route['method'] === strtoupper($method)) {
+					Middleware::resolve($route['middleware']);
 
-					if ($route['middleware'] === 'guest') {
-						(new Guest)->handle();
-					}
-					if ($route['middleware'] === 'auth') {
-						(new Auth)->handle();
-					}
-
-					return require base_path($route['controller']);
+					return require base_path('Http/' . $route['controller']);
 				}
 			}
 			$this->abort();
@@ -71,22 +66,3 @@
 			die();
 		}
 	}
-	//	$routes = require base_path('routes.php');
-	//
-	//	$uri = parse_url($_SERVER['REQUEST_URI'])['path'];
-	//
-	//	function routeToController($uri, $routes) {
-	//		if (array_key_exists($uri, $routes)) {
-	//			require base_path($routes[$uri]);
-	//		} else {
-	//			abort(404);
-	//		}
-	//	}
-	//
-	//	function abort($status = '404') {
-	//		http_response_code($status);
-	//		require base_path("views/{$status}.php");
-	//		die();
-	//	}
-	//
-	//	routeToController($uri, $routes);
