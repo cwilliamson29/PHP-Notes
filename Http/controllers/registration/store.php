@@ -1,7 +1,8 @@
 <?php
 
 	use Core\App;
-	use Core\Database;
+use Core\Authenticator;
+use Core\Database;
 	use Core\Validator;
 
 	$email = $_POST['email'];
@@ -33,7 +34,7 @@
 
 
 	if ($user) {
-		header('location: /');
+		header('location: /login');
 
 		exit();
 
@@ -43,7 +44,7 @@
 			'password' => password_hash($password, PASSWORD_BCRYPT)
 		]);
 
-		login([
+		Authenticator::login([
 			'email' => $email
 		]);
 
