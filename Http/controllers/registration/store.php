@@ -1,8 +1,8 @@
 <?php
 
 	use Core\App;
-use Core\Authenticator;
-use Core\Database;
+	use Core\Authenticator;
+	use Core\Database;
 	use Core\Validator;
 
 	$email = $_POST['email'];
@@ -34,9 +34,7 @@ use Core\Database;
 
 
 	if ($user) {
-		header('location: /login');
-
-		exit();
+		redirect('/login');
 
 	} else {
 		$db->query('INSERT INTO users(email, password) VALUES(:email, :password)', [
@@ -44,11 +42,9 @@ use Core\Database;
 			'password' => password_hash($password, PASSWORD_BCRYPT)
 		]);
 
-		Authenticator::login([
+		$this->login([
 			'email' => $email
 		]);
 
-		header('location: /');
-
-		exit();
+		redirect('/');
 	}
