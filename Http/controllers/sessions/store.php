@@ -1,7 +1,8 @@
 <?php
 
 	use Core\App;
-	use Core\Database;
+    use Core\Authenticator;
+    use Core\Database;
 	use Core\Validator;
 
 	$db = App::resolve(Database::class);
@@ -27,26 +28,18 @@
 		]);
 	}
 
-	$user = $db->query('select * from users where email = :email', [
-		'email' => $email
-	])->find();
+    $auth = new Authenticator();
+    if($auth->attempt($email, $password)) {
+        redirect('/');
+    }else{
 
-	if ($user) {
-		if (password_verify($password, $user['password'])) {
-			login([
-				'email' => $email
-			]);
+        /** @noinspection PhpVoidFunctionResultUsedInspection */
 
-			header('location: /');
-			exit();
-		}
-	}
+        return view('sessions/create.view.php', [
+            'errors' => [
+                'email' => 'Email or password is wrong.'
+            ]
+        ]);
+    };
 
 
-	/** @noinspection PhpVoidFunctionResultUsedInspection */
-
-	return view('sessions/create.view.php', [
-		'errors' => [
-			'email' => 'Email or password is wrong.'
-		]
-	]);
