@@ -20,6 +20,9 @@
 	//$_SESSION['_flash']['errors'] = $form->errors();
 
 	Session::flash('errors', $form->errors());
+    Session::flash('old', [
+        'email' => $_POST['email']
+    ]);
 	
 	return redirect('/login');
 
