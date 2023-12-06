@@ -3,6 +3,7 @@
 	session_start();
 
 	use Core\Router;
+	use Core\Session;
 
 	$BASE_PATH = __DIR__ . '/../';
 
@@ -23,3 +24,5 @@
 	$method = $_POST['_method'] ?? $_SERVER['REQUEST_METHOD'];
 
 	$router->route($uri, $method);
+
+	Session::unflash();

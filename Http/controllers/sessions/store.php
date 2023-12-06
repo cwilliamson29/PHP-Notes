@@ -1,7 +1,8 @@
 <?php
 
 	use Core\Authenticator;
-	use Core\Validator\LoginForm;
+	use Core\Session;
+	use Http\Forms\LoginForm;
 
 	$email = $_POST['email'];
 	$password = $_POST['password'];
@@ -16,7 +17,13 @@
 		$form->error('email', 'No matching account found for that email address and password.');
 	}
 
-	/** @noinspection PhpVoidFunctionResultUsedInspection */
-	return view('session/create.view.php', [
-		'errors' => $form->errors()
-	]);
+	//$_SESSION['_flash']['errors'] = $form->errors();
+
+	Session::flash('errors', $form->errors());
+	
+	return redirect('/login');
+
+	//	/** @noinspection PhpVoidFunctionResultUsedInspection */
+	//	return view('sessions/create.view.php', [
+	//		'errors' => $form->errors()
+	//	]);

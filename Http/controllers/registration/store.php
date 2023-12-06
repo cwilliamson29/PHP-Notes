@@ -1,50 +1,21 @@
 <?php
 
-	use Core\App;
 	use Core\Authenticator;
-	use Core\Database;
-	use Core\Validator;
+	use Http\Forms\LoginForm;
 
 	$email = $_POST['email'];
 	$password = $_POST['password'];
 
-	$errors = [];
+	$form = new LoginForm();
 
-	if (!Validator::email($email)) {
-		$errors['email'] = 'Please provide a valid email.';
+	if ($form->validate($email, $password)) {
+		if ((new Authenticator)->attempt($email, $password)) {
+			redirect('/');
+		}
+		$form->errors('email', 'No matching account found for that email address and password.');
 	}
 
-	if (!Validator::string($password, 7, 20)) {
-		$errors['password'] = 'Password must contain 7-20 characters';
-	}
-
-	if (!empty($errors)) {
-		/** @noinspection PhpVoidFunctionResultUsedInspection */
-
-		return view('registration/create.view.php', [
-			'errors' => $errors
-		]);
-	}
-
-	$db = App::resolve(Database::class);
-
-	$user = $db->query('select * from users where email = :email', [
-		'email' => $email
-	])->find();
-
-
-	if ($user) {
-		redirect('/login');
-
-	} else {
-		$db->query('INSERT INTO users(email, password) VALUES(:email, :password)', [
-			'email' => $email,
-			'password' => password_hash($password, PASSWORD_BCRYPT)
-		]);
-
-		$this->login([
-			'email' => $email
-		]);
-
-		redirect('/');
-	}
+	/** @noinspection PhpVoidFunctionResultUsedInspection */
+	return view('sessions/create.view.php', [
+		'errors' => $form->errors()
+	]);
