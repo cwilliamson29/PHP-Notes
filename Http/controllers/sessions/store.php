@@ -16,6 +16,7 @@
 		$form->error('email', 'No matching account found for that email address and password.');
 	}
 
+	/** @noinspection PhpVoidFunctionResultUsedInspection */
 	return view('session/create.view.php', [
 		'errors' => $form->errors()
 	]);
