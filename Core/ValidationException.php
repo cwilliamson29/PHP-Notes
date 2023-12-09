@@ -1,17 +1,20 @@
 <?php
 
-namespace Core;
+	namespace Core;
 
-class ValidationException extends \Exception
-{
-    protected $errors = [];
-    protected $old = [];
-    public static function throw($errors, $old){
-        $instance = new static;
+	use Exception;
 
-        $instance->errors = $errors;
-        $instance->old = $old;
+	class ValidationException extends Exception
+	{
+		public readonly array $errors;
+		public readonly array $old;
 
-        throw $instance;
-    }
-}
+		public static function throw($errors, $old) {
+			$instance = new static;
+
+			$instance->errors = $errors;
+			$instance->old = $old;
+
+			throw $instance;
+		}
+	}

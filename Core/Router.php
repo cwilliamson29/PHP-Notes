@@ -65,4 +65,8 @@
 			require base_path("views/{$status}.php");
 			die();
 		}
+
+		public function previousUrl() {
+			return $_SERVER['HTTP_REFERER'];
+		}
 	}
